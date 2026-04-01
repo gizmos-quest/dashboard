@@ -1,4 +1,5 @@
 FROM node:20-alpine AS build
+LABEL org.opencontainers.image.source=https://github.com/gizmos-quest/dashboard
 WORKDIR /app
 RUN npm install -g bun
 COPY package.json bun.lock ./
