@@ -1,25 +1,31 @@
 import { component$ } from "@builder.io/qwik";
-import type { DocumentHead } from "@builder.io/qwik-city";
+import {
+  routeLoader$,
+  type DocumentHead,
+} from "@builder.io/qwik-city";
+
+export const useUser = routeLoader$(({ sharedMap }) => {
+  return sharedMap.get("user") as {
+    username: string;
+    name: string;
+    email: string;
+  };
+});
 
 export default component$(() => {
+  const user = useUser();
+
   return (
-    <>
-      <h1>Hi 👋</h1>
-      <div>
-        Can't wait to see what you build with qwik!
-        <br />
-        Happy coding.
-      </div>
-    </>
+    <div style={{ padding: "2rem" }}>
+      <h1>Dashboard</h1>
+      <p>
+        Welcome, {user.value.name} ({user.value.username})
+      </p>
+      <a href="/auth/logout">Logout</a>
+    </div>
   );
 });
 
 export const head: DocumentHead = {
-  title: "Welcome to Qwik",
-  meta: [
-    {
-      name: "description",
-      content: "Qwik site description",
-    },
-  ],
+  title: "Dashboard",
 };
