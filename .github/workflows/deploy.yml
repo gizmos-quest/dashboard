@@ -32,19 +32,6 @@ jobs:
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
 
-      - name: Make package public
-        continue-on-error: true
-        uses: actions/github-script@v7
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            await github.request('PATCH /orgs/{org}/packages/{package_type}/{package_name}', {
-              org: 'gizmos-quest',
-              package_type: 'container',
-              package_name: 'dashboard',
-              visibility: 'public'
-            });
-
       - name: Deploy to Kubero
         run: |
           TOKEN=$(curl -s -X POST "${{ secrets.KUBERO_URL }}/api/auth/login" \
